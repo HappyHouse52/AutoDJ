@@ -1,13 +1,14 @@
 package com.happyhouse.autodj.api.resources;
 
+import com.google.common.base.Strings;
+import com.happyhouse.autodj.api.representations.Authorization;
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.methods.AlbumRequest;
 import com.wrapper.spotify.models.Album;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Arrays;
 import java.util.List;
 
 @Path("/auth")
@@ -21,13 +22,23 @@ public class AuthResource {
   }
 
   @GET
-  public String test() {
-    AlbumRequest request = this.spotifyApi.getAlbum("7e0ij2fpWaxOEHv5fUYZjd").build();
-    try {
-      Album album = request.get();
-      return album.getName();
-    } catch (Exception e) {
-      return e.getMessage();
+  public Authorization login(@QueryParam("code") String code,
+                             @QueryParam("state") String state) {
+
+    if (!Strings.isNullOrEmpty(code) && !Strings.isNullOrEmpty(state)) {
+      return this.loginSuccess(code, state);
+    } else {
+      return this.getSpotifyAuth();
     }
+  }
+
+  private Authorization getSpotifyAuth() {
+    final List<String> scopes = Arrays.asList("user-read-private", "user-read-email");
+    final String newState = "someExpectedStateString";
+    return new Authorization(this.spotifyApi.createAuthorizeURL(scopes, newState));
+  }
+
+  private Authorization loginSuccess(String code, String state) {
+    return new Authorization(null, code, state);
   }
 }
