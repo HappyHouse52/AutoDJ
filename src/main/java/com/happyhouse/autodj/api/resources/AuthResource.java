@@ -54,7 +54,9 @@ public class AuthResource {
     this.spotifyApi.setRefreshToken(creds.getRefreshToken());
 
     User spotifyUser = this.spotifyApi.getMe().build().get();
-    this.userService.createUser(spotifyUser.getId());
+    if (this.userService.findById(spotifyUser.getId()) == null) {
+      this.userService.createUser(spotifyUser.getId());
+    }
 
     return new Authorization(creds.getAccessToken(), creds.getRefreshToken());
   }

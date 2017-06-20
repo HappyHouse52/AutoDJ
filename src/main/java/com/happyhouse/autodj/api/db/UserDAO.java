@@ -7,7 +7,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 @RegisterMapper(User.UserMapper.class)
-public interface UserDAO {
+public interface UserDAO extends AbstractDAO {
 
   @SqlUpdate("create table if not exists User (id varchar(300) primary key)")
   void createUserTable();
