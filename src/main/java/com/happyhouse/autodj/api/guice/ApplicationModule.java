@@ -31,6 +31,8 @@ public class ApplicationModule extends DropwizardAwareModule<AutoDjAPIConfigurat
   UserService provideUserService() {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(getEnvironment(), getConfiguration().getDataSourceFactory(), "mysql");
-    return new UserService(jdbi.onDemand(UserDAO.class));
+    UserDAO dao = jdbi.onDemand(UserDAO.class);
+    dao.createUserTable();
+    return new UserService(dao);
   }
 }

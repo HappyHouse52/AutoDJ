@@ -29,7 +29,5 @@ public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
 
     @Override
     public void run(final AutoDjAPIConfiguration configuration,
-                    final Environment environment) {
-
-    }
+                    final Environment environment) { }
 }
