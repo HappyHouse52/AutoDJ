@@ -1,18 +1,18 @@
 package com.happyhouse.autodj.api;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.SettableFuture;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.happyhouse.autodj.api.db.UserDAO;
+import com.happyhouse.autodj.api.guice.ApplicationModule;
 import com.happyhouse.autodj.api.resources.AuthResource;
+import com.happyhouse.autodj.api.services.UserService;
+import com.hubspot.dropwizard.guicier.GuiceBundle;
 import com.wrapper.spotify.Api;
-import com.wrapper.spotify.exceptions.WebApiException;
-import com.wrapper.spotify.methods.authentication.ClientCredentialsGrantRequest;
-import com.wrapper.spotify.models.ClientCredentials;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import java.io.IOException;
+import org.skife.jdbi.v2.DBI;
 
 public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
 
@@ -27,27 +27,14 @@ public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<AutoDjAPIConfiguration> bootstrap) {
-        // TODO: application initialization
+        GuiceBundle<AutoDjAPIConfiguration> guiceBundle = GuiceBundle.defaultBuilder(AutoDjAPIConfiguration.class)
+            .modules(new ApplicationModule())
+            .build();
+
+        bootstrap.addBundle(guiceBundle);
     }
 
     @Override
     public void run(final AutoDjAPIConfiguration configuration,
-                    final Environment environment) {
-        Api spotifyApi = Api.builder()
-            .clientId(configuration.getSpotifyClientId())
-            .clientSecret(configuration.getSpotifyClientSecret())
-            .redirectURI(configuration.getSpotifyRedirectURI())
-            .build();
-
-//        final ClientCredentialsGrantRequest request = spotifyApi.clientCredentialsGrant().build();
-//        try {
-//            ClientCredentials creds = request.get();
-//            spotifyApi.setAccessToken(creds.getAccessToken());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
-
-        environment.jersey().register(new AuthResource(spotifyApi));
-    }
+                    final Environment environment) { }
 }

@@ -2,14 +2,11 @@ package com.happyhouse.autodj.api.representations;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by kmoses on 6/19/17.
- */
 public class Authorization {
 
   private String authorizeURL;
-  private String code;
-  private String state;
+  private String accessToken;
+  private String refreshToken;
 
   public Authorization() {}
 
@@ -17,10 +14,9 @@ public class Authorization {
     this.authorizeURL = authorizeURL;
   }
 
-  public Authorization(String authorizeURL, String code, String state) {
-    this.authorizeURL = authorizeURL;
-    this.code = code;
-    this.state = state;
+  public Authorization(String accessToken, String refreshToken) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
   }
 
   @JsonProperty
@@ -33,20 +29,21 @@ public class Authorization {
   }
 
   @JsonProperty
-  public String getCode() {
-    return code;
+  public String getAccessToken() {
+    return accessToken;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   @JsonProperty
-  public String getState() {
-    return state;
+  public String getRefreshToken() {
+    return refreshToken;
   }
 
-  public void setState(String state) {
-    this.state = state;
+  public void setRefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
   }
+
 }
