@@ -1,6 +1,5 @@
 package com.happyhouse.autodj.api.services;
 
-import com.google.inject.Inject;
 import com.happyhouse.autodj.api.db.UserDAO;
 import com.happyhouse.autodj.api.representations.User;
 
