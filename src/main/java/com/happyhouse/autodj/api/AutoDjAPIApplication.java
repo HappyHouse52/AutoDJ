@@ -34,5 +34,12 @@ public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
 
     @Override
     public void run(final AutoDjAPIConfiguration configuration,
-                    final Environment environment) { }
+                    final Environment environment) {
+//
+//        environment.jersey().register(new AuthDynamicFeature(new AutoDjAuthFilter.Builder<SpotifyUser>()
+//            .setAuthenticator(new AutoDjAuthenticator())
+//            .setRealm("BASIC-AUTH-REALM")
+//            .buildAuthFilter()));
+//        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(SpotifyUser.class));
+    }
 }

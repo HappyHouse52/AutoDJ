@@ -14,12 +14,12 @@ public class UserService {
     this.userDAO.createUserTable();
   }
 
-  public User createUser(String id) {
-    this.userDAO.insert(id);
-    return this.userDAO.findById(id);
+  public User createUser(String spotifyId) {
+    this.userDAO.insert(spotifyId);
+    return this.userDAO.findBySpotifyId(spotifyId);
   }
 
-  public User findById(String id) {
-    return this.userDAO.findById(id);
+  public User findById(String spotifyId) {
+    return this.userDAO.findBySpotifyId(spotifyId);
   }
 }

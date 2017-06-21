@@ -9,14 +9,16 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(User.UserMapper.class)
 public interface UserDAO extends AbstractDAO {
 
-  @SqlUpdate("create table if not exists User (id varchar(300) primary key)")
+  @SqlUpdate("create table if not exists User (" +
+      "id int AUTO_INCREMENT PRIMARY KEY, " +
+      "spotifyId int NOT NULL UNIQUE)")
   void createUserTable();
 
-  @SqlUpdate("insert into User (id) values (:id)")
-  void insert(@Bind("id") String id);
+  @SqlUpdate("insert into User (spotifyId) values (:spotifyId)")
+  void insert(@Bind("spotifyId") String spotifyId);
 
-  @SqlQuery("select * from User where id = :id")
-  User findById(@Bind("id") String id);
+  @SqlQuery("select * from User where spotifyId = :spotifyId")
+  User findBySpotifyId(@Bind("spotifyId") String spotifyId);
 
   /**
    * close with no args is used to close the connection
