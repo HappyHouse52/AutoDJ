@@ -2,7 +2,7 @@ package com.happyhouse.autodj.api.resources;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import com.happyhouse.autodj.api.representations.Authorization;
+import com.happyhouse.autodj.api.representations.SpotifyCredentials;
 import com.happyhouse.autodj.api.services.UserService;
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
@@ -32,8 +32,8 @@ public class AuthResource {
   }
 
   @GET
-  public Authorization login(@QueryParam("code") String code,
-                      @QueryParam("state") String state) throws IOException, WebApiException {
+  public SpotifyCredentials login(@QueryParam("code") String code,
+                                  @QueryParam("state") String state) throws IOException, WebApiException {
 
     if (!Strings.isNullOrEmpty(code) && !Strings.isNullOrEmpty(state)) {
       return this.loginSuccess(code, state);
@@ -42,13 +42,13 @@ public class AuthResource {
     }
   }
 
-  private Authorization getSpotifyAuth() {
+  private SpotifyCredentials getSpotifyAuth() {
     final List<String> scopes = Arrays.asList("user-read-private", "user-read-email");
     final String newState = "someExpectedStateString";
-    return new Authorization(this.spotifyApi.createAuthorizeURL(scopes, newState));
+    return new SpotifyCredentials(this.spotifyApi.createAuthorizeURL(scopes, newState));
   }
 
-  private Authorization loginSuccess(String code, String state) throws IOException, WebApiException {
+  private SpotifyCredentials loginSuccess(String code, String state) throws IOException, WebApiException {
     AuthorizationCodeCredentials creds = spotifyApi.authorizationCodeGrant(code).build().get();
     this.spotifyApi.setAccessToken(creds.getAccessToken());
     this.spotifyApi.setRefreshToken(creds.getRefreshToken());
@@ -58,6 +58,6 @@ public class AuthResource {
       this.userService.createUser(spotifyUser.getId());
     }
 
-    return new Authorization(creds.getAccessToken(), creds.getRefreshToken());
+    return new SpotifyCredentials(creds.getAccessToken(), creds.getRefreshToken());
   }
 }

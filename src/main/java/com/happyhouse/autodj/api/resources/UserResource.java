@@ -1,8 +1,10 @@
 package com.happyhouse.autodj.api.resources;
 
 import com.google.inject.Inject;
+import com.happyhouse.autodj.api.middleware.SpotifyUser;
 import com.happyhouse.autodj.api.services.UserService;
 import com.wrapper.spotify.Api;
+import io.dropwizard.auth.Auth;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,7 +25,7 @@ public class UserResource {
   }
 
   @GET
-  public String getUser() {
-    return "I'm in.";
+  public String getUser(@Auth SpotifyUser user) {
+    return "I'm in " + user.getName();
   }
 }

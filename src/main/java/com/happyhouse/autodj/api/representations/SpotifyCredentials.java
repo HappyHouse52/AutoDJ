@@ -2,19 +2,19 @@ package com.happyhouse.autodj.api.representations;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Authorization {
+public class SpotifyCredentials {
 
   private String authorizeURL;
   private String accessToken;
   private String refreshToken;
 
-  public Authorization() {}
+  public SpotifyCredentials() {}
 
-  public Authorization(String authorizeURL) {
+  public SpotifyCredentials(String authorizeURL) {
     this.authorizeURL = authorizeURL;
   }
 
-  public Authorization(String accessToken, String refreshToken) {
+  public SpotifyCredentials(String accessToken, String refreshToken) {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
   }

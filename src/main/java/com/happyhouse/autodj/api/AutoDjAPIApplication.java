@@ -3,8 +3,13 @@ package com.happyhouse.autodj.api;
 import com.happyhouse.autodj.api.db.UserDAO;
 import com.happyhouse.autodj.api.guice.ApplicationModule;
 import com.happyhouse.autodj.api.guice.DaoModule;
+import com.happyhouse.autodj.api.middleware.SpotifyAuthFilter;
+import com.happyhouse.autodj.api.middleware.SpotifyAuthenticator;
+import com.happyhouse.autodj.api.middleware.SpotifyUser;
 import com.hubspot.dropwizard.guicier.GuiceBundle;
 import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -35,11 +40,10 @@ public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
     @Override
     public void run(final AutoDjAPIConfiguration configuration,
                     final Environment environment) {
-//
-//        environment.jersey().register(new AuthDynamicFeature(new AutoDjAuthFilter.Builder<SpotifyUser>()
-//            .setAuthenticator(new AutoDjAuthenticator())
-//            .setRealm("BASIC-AUTH-REALM")
-//            .buildAuthFilter()));
-//        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(SpotifyUser.class));
+        environment.jersey().register(new AuthDynamicFeature(new SpotifyAuthFilter(
+            new SpotifyAuthenticator(),
+            "BASIC-AUTH-REALM"
+        )));
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(SpotifyUser.class));
     }
 }
