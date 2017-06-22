@@ -3,10 +3,6 @@ package com.happyhouse.autodj.api.middleware;
 import com.google.common.base.Strings;
 import com.happyhouse.autodj.api.representations.SpotifyCredentials;
 import io.dropwizard.auth.AuthFilter;
-import io.dropwizard.auth.AuthenticationException;
-import io.dropwizard.auth.Authenticator;
-import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
-import io.dropwizard.auth.basic.BasicCredentials;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -14,9 +10,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
-import java.security.Principal;
-import java.util.Optional;
 
 @Priority(Priorities.AUTHENTICATION)
 public class SpotifyAuthFilter extends AuthFilter<SpotifyCredentials, SpotifyUser> {
@@ -30,16 +25,9 @@ public class SpotifyAuthFilter extends AuthFilter<SpotifyCredentials, SpotifyUse
 
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
-    Optional<SpotifyUser> authenticatedUser;
+    SpotifyCredentials credentials = getCredentials(requestContext);
 
-    try {
-      SpotifyCredentials credentials = getCredentials(requestContext);
-      authenticatedUser = authenticator.authenticate(credentials);
-    } catch (AuthenticationException e) {
-      throw new WebApplicationException("Unable to validate credentials", Response.Status.UNAUTHORIZED);
-    }
-
-    if (!authenticatedUser.isPresent()) {
+    if (!authenticate(requestContext, credentials, SecurityContext.BASIC_AUTH)) {
       throw new WebApplicationException("Credentials not valid", Response.Status.UNAUTHORIZED);
     }
   }
