@@ -25,7 +25,7 @@ public class UserResource {
   }
 
   @GET
-  public String getUser(@Auth SpotifyUser user) {
-    return "I'm in " + user.getName();
+  public SpotifyUser getUser(@Auth SpotifyUser user) {
+    return user;
   }
 }

@@ -1,29 +1,29 @@
 package com.happyhouse.autodj.api.middleware;
 
-import javax.security.auth.Subject;
+import com.wrapper.spotify.models.User;
+
 import java.security.Principal;
 
-public class SpotifyUser implements Principal {
+public class SpotifyUser extends User implements Principal {
 
-  private String id;
-  private String name;
+  public SpotifyUser() {}
 
-  public SpotifyUser(String id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  public String getId() {
-    return id;
+  public SpotifyUser(User u) {
+    this.setCountry(u.getCountry());
+    this.setDisplayName(u.getDisplayName());
+    this.setEmail(u.getEmail());
+    this.setExternalUrls(u.getExternalUrls());
+    this.setFollowers(u.getFollowers());
+    this.setHref(u.getHref());
+    this.setId(u.getId());
+    this.setImages(u.getImages());
+    this.setProduct(u.getProduct());
+    this.setType(u.getType());
+    this.setUri(u.getUri());
   }
 
   @Override
   public String getName() {
-    return this.name;
-  }
-
-  @Override
-  public boolean implies(Subject subject) {
-    return false;
+    return this.getDisplayName();
   }
 }

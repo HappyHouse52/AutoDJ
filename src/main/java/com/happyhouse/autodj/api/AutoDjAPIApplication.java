@@ -7,6 +7,7 @@ import com.happyhouse.autodj.api.middleware.SpotifyAuthFilter;
 import com.happyhouse.autodj.api.middleware.SpotifyAuthenticator;
 import com.happyhouse.autodj.api.middleware.SpotifyUser;
 import com.hubspot.dropwizard.guicier.GuiceBundle;
+import com.wrapper.spotify.Api;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
@@ -40,8 +41,19 @@ public class AutoDjAPIApplication extends Application<AutoDjAPIConfiguration> {
     @Override
     public void run(final AutoDjAPIConfiguration configuration,
                     final Environment environment) {
+        this.configureAuth(configuration, environment);
+    }
+
+    private void configureAuth(final AutoDjAPIConfiguration configuration,
+                               final Environment environment) {
+        Api spotifyApi = Api.builder()
+            .clientId(configuration.getSpotifyClientId())
+            .clientSecret(configuration.getSpotifyClientSecret())
+            .redirectURI(configuration.getSpotifyRedirectURI())
+            .build();
+
         environment.jersey().register(new AuthDynamicFeature(new SpotifyAuthFilter(
-            new SpotifyAuthenticator(),
+            new SpotifyAuthenticator(spotifyApi),
             "BASIC-AUTH-REALM"
         )));
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(SpotifyUser.class));
