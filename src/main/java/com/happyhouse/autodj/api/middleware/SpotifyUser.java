@@ -6,6 +6,9 @@ import java.security.Principal;
 
 public class SpotifyUser extends User implements Principal {
 
+  private String accessToken;
+  private String refreshToken;
+
   public SpotifyUser() {}
 
   public SpotifyUser(User u) {
@@ -20,6 +23,22 @@ public class SpotifyUser extends User implements Principal {
     this.setProduct(u.getProduct());
     this.setType(u.getType());
     this.setUri(u.getUri());
+  }
+
+  public String getAccessToken() {
+    return accessToken;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
+  public String getRefreshToken() {
+    return refreshToken;
+  }
+
+  public void setRefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
   }
 
   @Override

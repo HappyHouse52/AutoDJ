@@ -23,7 +23,7 @@ public class SpotifyAuthenticator implements Authenticator<SpotifyCredentials, S
   @Override
   public Optional<SpotifyUser> authenticate(SpotifyCredentials credentials) throws AuthenticationException {
 
-    SpotifyUser user = null;
+    SpotifyUser user;
 
     this.spotifyApi.setAccessToken(credentials.getAccessToken());
     this.spotifyApi.setRefreshToken(credentials.getRefreshToken());
@@ -31,6 +31,8 @@ public class SpotifyAuthenticator implements Authenticator<SpotifyCredentials, S
     try {
       User apiUser = this.spotifyApi.getMe().build().get();
       user = new SpotifyUser(apiUser);
+      user.setAccessToken(credentials.getAccessToken());
+      user.setRefreshToken(credentials.getRefreshToken());
     } catch (IOException | WebApiException e) {
       throw new WebApplicationException("There was a problem authenticating with Spotify. Please try again later.", Response.Status.INTERNAL_SERVER_ERROR);
     }
