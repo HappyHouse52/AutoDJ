@@ -23,3 +23,14 @@ logs
 
 /config-dev.yml
 .DS_Store
+config.yml
+
+
+# ===== UI ======
+*.log
+node_modules
+dist
+coverage
+.yarn-cache
+build/
+*.lock

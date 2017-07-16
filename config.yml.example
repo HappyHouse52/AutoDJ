@@ -5,16 +5,16 @@ spotifyRedirectURI: ""
 
 database:
   # the name of your JDBC driver
-  driverClass:
+  driverClass: ""
 
   # the username
-  user:
+  user: ""
 
   # the password
-  password:
+  password: ""
 
   # the JDBC URL
-  url:
+  url: ""
 
   # any properties specific to your JDBC driver:
   properties:
