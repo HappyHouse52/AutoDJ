@@ -1,27 +1,35 @@
 import React from 'react';
 import { browserHistory, Router } from 'react-router';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Login from '../routes/Login';
 
 class App extends React.Component {
   static propTypes = {
     store: PropTypes.object.isRequired,
     routes: PropTypes.object.isRequired,
-  }
+  };
 
-  shouldComponentUpdate () {
-    return false;
+  isLoggedIn () {
+    return !!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken');
   }
 
   render () {
+    const { routes, store } = this.props;
+    const page = this.isLoggedIn() ? <Router history={browserHistory} children={routes} /> : <Login />;
+
     return (
-      <Provider store={this.props.store}>
+      <Provider store={store}>
         <div style={{ height: '100%' }}>
-          <Router history={browserHistory} children={this.props.routes} />
+          {page}
         </div>
       </Provider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  loginInfo: state.login
+});
+
+export default connect(mapStateToProps)(App);
