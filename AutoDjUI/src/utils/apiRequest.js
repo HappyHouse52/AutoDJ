@@ -26,9 +26,9 @@ export const postJSON = (path, body) => {
     body: JSON.stringify(body)
   })
   .then(checkStatus)
-  .then((response) =>{
+  .then((response) => {
     return response.json();
-  })
+  });
 };
 
 // =====================================

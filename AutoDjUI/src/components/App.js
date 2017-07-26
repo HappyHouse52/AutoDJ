@@ -10,15 +10,13 @@ class App extends React.Component {
     routes: PropTypes.object.isRequired,
   };
 
-  isLoggedIn() {
+  isLoggedIn () {
     return !!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken');
   }
 
   render () {
-    const {routes, store} = this.props;
-    const page = this.isLoggedIn() ?
-      <Router history={browserHistory} children={routes}/> :
-      <Login/>;
+    const { routes, store } = this.props;
+    const page = this.isLoggedIn() ? <Router history={browserHistory} children={routes} /> : <Login />;
 
     return (
       <Provider store={store}>

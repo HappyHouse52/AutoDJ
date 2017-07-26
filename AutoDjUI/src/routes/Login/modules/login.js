@@ -11,7 +11,7 @@ export const LOG_IN_CALLBACK = 'LOG_IN_CALLBACK';
 export const logInCallback = (accessToken, state) => {
   return (dispatch, getState) => {
     return new Promise((resolve) => {
-      getJSON('auth?code=' + accessToken + "&state=" + state)
+      getJSON(`auth?code=${accessToken}&state=${state}`)
         .then((response) => {
           dispatch({
             type    : LOG_IN_CALLBACK,
@@ -46,7 +46,6 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [LOG_IN_CALLBACK] : (state, action) => {
-    window.location.search = '';
     localStorage.setItem('accessToken', action.payload.accessToken);
     localStorage.setItem('refreshToken', action.payload.refreshToken);
     return action.payload;
