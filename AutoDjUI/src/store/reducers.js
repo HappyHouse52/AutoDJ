@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import locationReducer from './location';
 import loginReducer from '../routes/Login/modules/login';
+import queueReducer from './queue';
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     location: locationReducer,
     login: loginReducer,
+    queue: queueReducer,
     ...asyncReducers
   });
 };
