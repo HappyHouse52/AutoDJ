@@ -2,7 +2,8 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import _ from 'lodash';
 import Select from 'react-select';
-import 'TrackSearch.css';
+import { toast } from 'react-toastify';
+import './Search.scss';
 
 class TrackSearch extends React.Component {
 
@@ -16,6 +17,8 @@ class TrackSearch extends React.Component {
       "handleSearchChange",
       "onChange"
     );
+
+    this.handleSearchChange = _.debounce(this.handleSearchChange, 250);
   }
 
   componentWillUnmount() {
@@ -29,7 +32,12 @@ class TrackSearch extends React.Component {
       value: track
     });
 
-    this.props.addTrackToQueue(track.value);
+    this.props.addTrackToQueue(track.value)
+      .then(() => this.handleToast(track.value));
+  }
+
+  handleToast(track) {
+    toast.info(`"${track.name} - ${track.artists[0].name}" added to the queue`);
   }
 
   handleSearchChange(value) {
